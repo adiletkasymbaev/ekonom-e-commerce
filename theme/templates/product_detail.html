@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block meta %}
+<!-- TODO: meta tags for main page -->
+{% endblock %}
+
+{% block title %}
+{{ product.name }}
+{% endblock %}
+
+{% block content %}
+<div class="w-3/4 h-full gap-8 flex flex-col">
+    <div class="flex gap-3">
+        <a href="{% url URLNames.MAIN_PAGE %}">Главная</a>
+        <span class="opacity-70">/</span>
+
+        {% if product.category.parent %}
+            <a href="{% url URLNames.CATALOG_PAGE product.category.parent.slug %}">{{ product.category.parent.name }}</a>
+            <span class="opacity-70">/</span>
+        {% endif %}
+
+        <a href="{% url URLNames.CATALOG_PAGE product.category.slug %}">{{ product.category.name }}</a>
+    </div>
+
+    <div class="flex gap-6 relative">
+        <div class="w-1/2 overflow-hidden flex justify-center items-center">
+            <img class="w-full" src="{{ product.image.url }}" alt="">
+        </div>
+        <div class="w-1/2 flex items-start flex-col">
+            <h1 class="title mb-3">{{ product.name }}</h1>
+            {% if product.get_discount %}
+            <div class="absolute -left-4 -top-4 bg-[#7188d4] size-15 text-xl rounded-full flex justify-center items-center font-bold text-white">
+                {{ product.get_discount.percentage|floatformat:0 }}%
+            </div>
+
+            <div class="mt-1 flex gap-3 mb-6">
+                <p class="line-through text-xl text-gray-500">{{ product.price|floatformat:0 }} сом</p>
+                <p class="font-bold text-4xl text-leader">{{ product.get_final_price|floatformat:0 }} сом</p>
+            </div>
+            {% else %}
+            <div class="font-medium text-4xl mb-6">
+                {{ product.price|floatformat:0 }} сом
+            </div>
+            {% endif %}
+
+            {% if product.sizes.all %}
+            <div class="flex gap-2">
+                {% for size in product.sizes.all %}
+                <div class="size-9 bg-gray-200 rounded-sm flex justify-center items-center font-medium">
+                    {{ size.name }}
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            <div class="flex">
+                <form action="{% url URLNames.ACTION_ADD_TO_CART product.slug %}" method="POST" class="flex flex-col">
+                    {% csrf_token %}
+                    <input type="hidden" name="next" value="{{ request.path }}">
+                    
+                    {% if product.sizes.all %}
+                        <div class="mt-3 transition-all duration-300">
+                            <label for="size-{{ product.id }}" class="sr-only">Выберите размер</label>
+                            <select name="size_id" id="size-{{ product.id }}" required class="border border-gray-300 rounded-lg px-2 py-1 mb-2 w-full">
+                                <option value="" disabled selected>Выберите размер</option>
+                                {% for size in product.sizes.all %}
+                                    <option value="{{ size.id }}">{{ size.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    {% endif %}
+
+                    <button type="submit" class="i-button cursor-pointer transition-all duration-300 mt-2 bg-[#7188d4] text-white px-4 py-2 rounded-lg">
+                        В корзину
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

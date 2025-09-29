@@ -1,0 +1,74 @@
+{% load static %}
+
+<div class="w-full">
+    <div class="i-container py-3">
+        <div class="flex items-center gap-6">
+            <a href="{% url URLNames.MAIN_PAGE %}" class="w-1/4 flex justify-start">
+                <img 
+                    class="h-14"
+                    src="{{ site_settings.logo.url }}" 
+                    alt="Логотип"
+                >
+            </a>
+            <div class="w-2/4">
+                <div class="w-full border rounded-md border-blue-950 px-4 py-2 pr-12 flex relative overflow-hidden focus-within:border-[#7188d4] transition-colors">
+                    <input 
+                        type="text" 
+                        placeholder="Поиск"
+                        class="w-full focus:outline-0"
+                    >
+                    <div class="cursor-pointer bg-leader absolute bottom-0 right-0 h-full w-10 flex justify-center items-center">
+                        <img 
+                            class="w-5"
+                            src="{% static 'icons/ic_search.svg' %}" 
+                            alt=""
+                        >
+                    </div>
+                </div>
+            </div>
+            <div class="w-1/4">
+                <div class="flex gap-8 justify-end items-center">                    
+                    {% if is_authenticated %}
+                    <form method="post" action="{% url 'account_logout' %}" class="flex items-center gap-2">
+                        {% csrf_token %}
+                        <a href="" class="text-sm">
+                            {{ user.email }}
+                        </a>
+                        <button type="submit" class="cursor-pointer">
+                            <img class="size-4" src="{% static 'icons/ic_logout.svg' %}" alt="Выход из аккаунта">
+                        </button>
+                    </form>
+
+                    <a href="{% url URLNames.CART_PAGE %}">
+                        <div class="relative flex gap-4">
+                            <img 
+                                class="size-[26px]"
+                                src="{% static 'icons/ic_basket.svg' %}" 
+                                alt="Корзина"
+                            >
+
+                            {% if cart.count_items > 0 %}
+                            <div class="absolute -top-2 left-4.5 rounded-full px-[8px] py-[3px] font-medium text-[9px] text-white bg-leader">
+                                {{ cart.count_items }}
+                            </div>
+                            {% endif %}
+
+
+                            <span class="text-leader font-medium">
+                                {{ cart.total_price|floatformat:2 }} сом
+                            </span>
+                        </div>
+                    </a>
+                    {% else %}
+                    <a href="{% url URLNames.ACCOUNT_LOGIN %}" class="i-button cursor-pointer">
+                        Войти
+                    </a>
+                    <a href="{% url URLNames.ACCOUNT_SIGNUP %}" class="opacity-70 underline underline-offset-4 hover:decoration-transparent">
+                        Зарегистрироваться
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

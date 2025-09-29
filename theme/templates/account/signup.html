@@ -1,0 +1,92 @@
+{% extends '../base.html' %}
+
+{% load i18n %}
+{% load account socialaccount %}
+
+{% block meta %}
+<!-- TODO: meta tags for signup page -->
+{% endblock %}
+
+{% block title %}
+Регистрация
+{% endblock %}
+
+{% block content %}
+<main class="w-3/4  flex justify-center">
+  <div class="w-full h-[fit-content] bg-white rounded-2xl shadow-md p-8">
+    <h1 class="text-2xl font-semibold text-gray-800 text-center mb-6">
+      {% trans "Регистрация" %}
+    </h1>
+
+    {% if form.errors %}
+    <div class="text-red-700 text-sm p-2 bg-gray-100 rounded-lg mb-4" style="color: red; opacity: 80%;">
+        <ul class="list-disc list-inside space-y-1">
+        {% for field, errors in form.errors.items %}
+            {% for error in errors %}
+            <li>{{ error|escape }}</li>
+            {% endfor %}
+        {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+
+    <div>
+        <!-- Обычная регистрация -->
+        <form method="POST" action="{% url 'account_signup' %}" class="space-y-5">
+        {% csrf_token %}
+
+        <div>
+            <label for="id_email" class="block text-sm text-gray-700 mb-1">
+            {% trans "Email" %}
+            </label>
+            <input type="email" name="email" id="id_email"
+                class="w-full border border-gray-300 rounded-lg px-2 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required>
+        </div>
+
+        <div>
+            <label for="id_password1" class="block text-sm text-gray-700 mb-1">
+            {% trans "Пароль" %}
+            </label>
+            <input type="password" name="password1" id="id_password1"
+                class="w-full border border-gray-300 rounded-lg px-2 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required>
+        </div>
+
+        <div>
+            <label for="id_password2" class="block text-sm text-gray-700 mb-1">
+            {% trans "Повторите пароль" %}
+            </label>
+            <input type="password" name="password2" id="id_password2"
+                class="w-full border border-gray-300 rounded-lg px-2 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required>
+        </div>
+
+            <div class="flex gap-4 mt-4 mb-4">
+                <button type="submit"
+                    class="i-button cursor-pointer">
+                    {% trans "Зарегистрироваться" %}
+                </button>
+                <div class="flex justify-center items-center">
+                    <p class="text-sm text-gray-600">
+                        {% trans "Уже есть аккаунт?" %}
+                        <a href="{% url 'account_login' %}" class="text-blue-600 hover:underline font-medium">
+                            {% trans "Войти" %}
+                        </a>
+                    </p>
+                </div>
+            </div>
+        </form>
+
+        {% providers_media_js %}
+        <form method="POST" action="{% url 'google_login' %}">  
+            {% csrf_token %}  
+            <button type="submit" class="cursor-pointer flex items-center justify-center gap-2 border border-gray-300 rounded-lg py-2 px-4 hover:bg-gray-50">
+                <img src="https://www.svgrepo.com/show/355037/google.svg" alt="Google" class="w-5 h-5">
+                <span class="text-sm font-medium text-gray-700">{% trans "Продолжить через Google" %}</span>
+            </button>
+        </form>  
+    </div> 
+  </div>
+</main>
+{% endblock %}

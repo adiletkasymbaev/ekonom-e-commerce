@@ -1,0 +1,29 @@
+<div class="w-1/4 h-full flex flex-col gap-8 pb-6">
+    <div class="flex flex-col mb-4">
+        <h1 class="title mb-2">Категории</h1>
+        <div class="flex flex-col">
+            {% for category in categories_parent %}
+            <a href="{% url URLNames.CATALOG_PAGE category.slug %}" class="link category">
+                {{ category.name }}
+            </a>
+            <div class="flex flex-col pl-4 gap-2 cursor-pointer border-l border-gray-200">
+                {% for subcategory in category.children.all %}
+                <a href="{% url URLNames.CATALOG_PAGE subcategory.slug %}" class="link category-sm">{{ subcategory.name }}</a>
+                {% endfor %}
+            </div>
+            {% empty %}
+            <p class="text-leader opacity-50">Нет категорий</p>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="flex flex-col gap-4">
+        <h1 class="title">Подписывайтесь</h1>
+        <div class="flex gap-6">
+            {% for socials_item in socials_list %}
+            <a href="{{ socials_item.link }}" class="image-container rounded-full size-12">
+                <img class="h-full max-w-none" src="{{ socials_item.logo.url }}" alt="">
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+</div>

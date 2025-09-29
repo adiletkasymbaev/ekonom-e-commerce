@@ -1,0 +1,28 @@
+body {
+    --primary: #56a745;
+    --secondary: #A5D6A7;
+    --grey: #e4e4e4;
+    --grey-darker: #bfbfbf;
+    --light: #fff;
+    --dark: #000;
+    --rounded-sm: 4px;
+    --rounded-md: 12px;
+    --rounded-lg: 18px;
+    --p-0: 0;
+    --p-2: 2px;
+    --p-4: 4px;
+    --p-6: 6px;
+    --p-8: 8px;
+    --p-12: 12px;
+    --p-16: 16px;   
+    --smooth: all .2s;
+    --smooth-short: all .1s;
+
+    font-family: 'Nunito Sans', Arial, sans-serif;
+}
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}

@@ -1,0 +1,87 @@
+@import "tailwindcss";
+@plugin "daisyui";
+
+/**
+  * A catch-all path to Django template files, JavaScript, and Python files
+  * that contain Tailwind CSS classes and will be scanned by Tailwind to generate the final CSS file.
+  *
+  * If your final CSS file is not being updated after code changes, you may want to broaden or narrow
+  * the scope of this path.
+  */
+@source "../../../**/*.{html,py,js}";
+
+.i-container {
+  max-width: 1420px;
+  margin: 0 auto;
+}
+
+a:not(.i-button) {
+  @apply transition-all opacity-70 hover:opacity-100
+}
+
+a:has(> img), a.no-link {
+  @apply opacity-100
+}
+
+.link {
+  @apply text-black no-underline transition-all hover:text-[#7188d4]
+}
+
+.category {
+  @apply py-3
+}
+
+.category-sm {
+  @apply py-2 border-b border-b-gray-200 last:border-b-0
+}
+
+.image-container {
+  @apply overflow-hidden flex justify-center items-center
+}
+
+.bg-leader {
+  background: #7188d4;
+}
+
+.bg-leader-pale {
+  background: #dbeafe;
+}
+
+.bg-leader-pale2 {
+  background: #e5ecff;
+}
+
+.text-leader {
+  color: #7188d4;
+}
+
+.i-button {
+  @apply text-white font-medium bg-[#7188d4] px-4 py-2 rounded-md transition-all hover:opacity-70
+}
+
+.title {
+  @apply text-2xl font-bold
+}
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 10px;
+}
+
+.swiper {
+  width: 100%;
+  height: 100%;
+}
+
+.swiper-slide {
+  text-align: center;
+  font-size: 18px;
+}
+
+.swiper-slide img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}

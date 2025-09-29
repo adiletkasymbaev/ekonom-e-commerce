@@ -1,0 +1,88 @@
+{% extends '../base.html' %}
+
+{% load i18n %}
+{% load account socialaccount %}
+
+{% block meta %}
+<!-- TODO: meta tags for login page -->
+{% endblock %}
+
+{% block title %}
+Вход
+{% endblock %}
+
+{% block content %}
+<main class="w-3/4  flex justify-center">
+  <div class="w-full h-[fit-content] bg-white rounded-2xl shadow-md p-8">
+    <h1 class="text-2xl font-semibold text-gray-800 text-center mb-3">
+      {% trans "Вход" %}
+    </h1>
+
+    {% if form.errors %}
+    <div class="text-red-700 text-sm p-2 bg-gray-100 rounded-lg mb-4" style="color: red; opacity: 80%;">
+        <ul class="list-disc list-inside space-y-1">
+        {% for field, errors in form.errors.items %}
+            {% for error in errors %}
+            <li>{{ error|escape }}</li>
+            {% endfor %}
+        {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+
+
+    <form method="POST" action="{% url 'account_login' %}" class="space-y-5">
+      {% csrf_token %}
+      
+      <div>
+        <label for="id_login" class="block text-sm text-gray-700 mb-1">
+          {% trans "Email" %}
+        </label>
+        <input type="email" name="login" id="id_login" 
+               class="w-full border border-gray-300 rounded-lg px-2 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+               required>
+      </div>
+
+      <div>
+        <label for="id_password" class="block text-sm text-gray-700 mb-1">
+          {% trans "Пароль" %}
+        </label>
+        <input type="password" name="password" id="id_password" 
+               class="w-full border border-gray-300 rounded-lg px-2 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+               required>
+      </div>
+
+      <div class="flex items-center justify-between text-sm mt-2">
+        <label class="flex items-center space-x-1 gap-1 cursor-pointer">
+          <input type="checkbox" name="remember" class="h-4 w-4 text-blue-600 border-gray-300 rounded">
+          <span class="text-gray-600">{% trans "Запомнить меня" %}</span>
+        </label>
+        <a href="{% url 'account_reset_password' %}" class="text-blue-600 hover:underline">
+          {% trans "Забыли пароль?" %}
+        </a>
+      </div>
+
+      <div class="flex items-center gap-2 mt-4">
+        <button type="submit"
+              class="i-button cursor-pointer">
+        {% trans "Войти" %}
+        </button>
+        <p class="text-center text-sm text-gray-600">
+            {% trans "Нет аккаунта?" %}
+            <a href="{% url 'account_signup' %}" class="text-blue-600 hover:underline font-medium">
+                {% trans "Зарегистрироваться" %}
+            </a>
+        </p>
+      </div>
+    </form>
+    {% providers_media_js %}
+    <form method="POST" action="{% url 'google_login' %}" class="mt-3">  
+        {% csrf_token %}  
+        <button type="submit" class="cursor-pointer flex items-center justify-center gap-2 border border-gray-300 rounded-lg py-2 px-4 hover:bg-gray-50">
+            <img src="https://www.svgrepo.com/show/355037/google.svg" alt="Google" class="w-5 h-5">
+            <span class="text-sm font-medium text-gray-700">{% trans "Продолжить через Google" %}</span>
+        </button>
+    </form>  
+  </div>
+</main>
+{% endblock %}

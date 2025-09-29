@@ -1,0 +1,129 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block meta %}
+<!-- TODO: meta tags for order page -->
+{% endblock %}
+
+{% block title %}
+Заказ
+{% endblock %}
+
+{% block content %}
+<main class="w-3/4 flex justify-center py-10">
+  <div class="w-full bg-white rounded-2xl shadow-md p-8 h-[fit-content]">
+    <h1 class="text-2xl font-semibold text-gray-800 text-center mb-6">
+      Оформление заказа
+    </h1>
+
+    <!-- Список товаров -->
+    <div class="mb-6">
+      <h2 class="text-lg font-medium text-gray-700 mb-3">Ваши товары</h2>
+      <ul class="divide-y divide-gray-200">
+        {% for cart_item in cart.items.all %}
+        <li class="py-2 flex justify-between">
+          <span class="text-gray-700">{{ cart_item.product.name }} ({{ cart_item.size }})</span>
+          <span class="font-medium text-gray-800">{{ cart_item.total_price|floatformat:2 }} сом</span>
+        </li>
+        {% endfor %}
+      </ul>
+      <div class="flex justify-between mt-4 border-t pt-4">
+        <span class="text-lg font-semibold text-gray-800">Итого:</span>
+        <span class="text-lg font-bold text-blue-600">{{ cart.total_price|floatformat:2 }} сом</span>
+      </div>
+    </div>
+
+    <!-- Форма оплаты и данных получателя -->
+    <form method="POST" action="{% url 'action_test_order_submit' %}" class="space-y-6">
+      {% csrf_token %}
+
+      <!-- Оплата картой -->
+      <div>
+        <h2 class="text-lg font-medium text-gray-700 mb-3">Оплата картой</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label for="card_number" class="block text-sm text-gray-700 mb-1">Номер карты</label>
+            <input type="text" id="card_number" name="card_number" maxlength="19"
+                   class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                   placeholder="0000 0000 0000 0000" required>
+          </div>
+          <div>
+            <label for="card_name" class="block text-sm text-gray-700 mb-1">Имя на карте</label>
+            <input type="text" id="card_name" name="card_name"
+                   class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                   placeholder="IVAN IVANOV" required>
+          </div>
+          <div>
+            <label for="card_expiry" class="block text-sm text-gray-700 mb-1">Срок действия</label>
+            <input type="text" id="card_expiry" name="card_expiry" maxlength="5"
+                   class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                   placeholder="MM/YY" required>
+          </div>
+          <div>
+            <label for="card_cvv" class="block text-sm text-gray-700 mb-1">CVV</label>
+            <input type="text" id="card_cvv" name="card_cvv" maxlength="3"
+                   class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                   placeholder="123" required>
+          </div>
+        </div>
+      </div>
+
+      <!-- Данные получателя -->
+      <div>
+        <h2 class="text-lg font-medium text-gray-700 mb-3">Данные получателя</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label for="first_name" class="block text-sm text-gray-700 mb-1">Имя</label>
+            <input type="text" id="first_name" name="first_name"
+                   class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                   required>
+          </div>
+          <div>
+            <label for="last_name" class="block text-sm text-gray-700 mb-1">Фамилия</label>
+            <input type="text" id="last_name" name="last_name"
+                   class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                   required>
+          </div>
+          <div class="md:col-span-2">
+            <label for="city" class="block text-sm text-gray-700 mb-1">Город</label>
+            <input type="text" id="city" name="city"
+                   class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                   required>
+          </div>
+          <div class="md:col-span-2">
+            <label for="street" class="block text-sm text-gray-700 mb-1">Улица</label>
+            <input type="text" id="street" name="street"
+                   class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                   required>
+          </div>
+          <div>
+            <label for="house" class="block text-sm text-gray-700 mb-1">Дом</label>
+            <input type="text" id="house" name="house"
+                   class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                   required>
+          </div>
+          <div>
+            <label for="apartment" class="block text-sm text-gray-700 mb-1">Квартира (опционально)</label>
+            <input type="text" id="apartment" name="apartment"
+                   class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+          </div>
+          <div class="md:col-span-2">
+            <label for="phone" class="block text-sm text-gray-700 mb-1">Номер телефона</label>
+            <input type="tel" id="phone" name="phone"
+                   class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                   placeholder="+7 999 999 99 99" required>
+          </div>
+        </div>
+      </div>
+
+      <!-- Кнопка -->
+      <div class="mt-6">
+        <button type="submit"
+                class="i-button cursor-pointer w-full py-3">
+          Подтвердить заказ
+        </button>
+      </div>
+    </form>
+  </div>
+</main>
+{% endblock %}

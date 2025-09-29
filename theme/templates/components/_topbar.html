@@ -1,0 +1,21 @@
+<div class="w-full bg-blue-100">
+    <div class="i-container p-3 flex justify-between">
+        <div class="flex gap-4">
+            <a href="" class="text-blue-950">
+                Оплата
+            </a>
+            <a href="" class="text-blue-950">
+                Доставка
+            </a>
+            <a href="" class="text-blue-950">
+                Возврат
+            </a>
+        </div>
+        <div class="flex gap-6">
+            <p class="text-gray-400">
+                Доставка с {{ site_settings.working_hours_start }} до {{ site_settings.working_hours_end }}
+            </p>
+            <a href="tel:{{ site_settings.phone_number }}" class="text-blue-950">{{ site_settings.phone_number }}</a>
+        </div>
+    </div>
+</div>

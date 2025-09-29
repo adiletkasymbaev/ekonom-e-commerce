@@ -1,0 +1,47 @@
+{% extends '../base.html' %}
+
+{% load i18n %}
+{% load account socialaccount %}
+
+{% block meta %}
+<!-- TODO: meta tags for email confirmation page -->
+{% endblock %}
+
+{% block title %}
+Подтверждение почты
+{% endblock %}
+
+{% block content %}
+<main class="w-3/4 flex justify-center">
+  <div class="w-full h-[fit-content] bg-white rounded-2xl shadow-md p-8 text-center">
+    {% if confirmation %}
+      <h1 class="text-2xl font-semibold text-gray-800 mb-4">
+        {% trans "Email подтверждён!" %}
+      </h1>
+
+      <p class="text-gray-600 mb-6">
+        {% trans "Ваш аккаунт успешно активирован. Теперь вы можете войти." %}
+      </p>
+
+      <a href="{% url 'account_login' %}" 
+         class="i-button cursor-pointer px-6 py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700">
+        {% trans "Войти" %}
+      </a>
+
+    {% else %}
+      <h1 class="text-2xl font-semibold text-gray-800 mb-4">
+        {% trans "Ссылка недействительна" %}
+      </h1>
+
+      <p class="text-gray-600 mb-6">
+        {% trans "Ссылка для подтверждения почты недействительна или уже использована." %}
+      </p>
+
+      <a href="{% url 'account_login' %}" 
+         class="i-button cursor-pointer px-6 py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700">
+        {% trans "Войти" %}
+      </a>
+    {% endif %}
+  </div>
+</main>
+{% endblock %}

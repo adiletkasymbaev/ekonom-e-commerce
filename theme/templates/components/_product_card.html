@@ -1,0 +1,46 @@
+<div class="flex flex-col justify-center items-center cursor-pointer group relative">
+    <a href="{% url URLNames.PRODUCT_DETAIL_PAGE product.slug %}" class="no-link image-container w-full h-[200px] mb-4 bg-leader-pale2">
+        <img src="{{ product.thumbnail.url }}" alt="{{ product.name }}">
+    </a>
+    
+    <a href="{% url URLNames.PRODUCT_DETAIL_PAGE product.slug %}" class="no-link group-hover:text-[#7188d4] transition-all">{{ product.name }}</a>
+
+    {% if product.get_discount %}
+        <div class="absolute -right-1 -top-1 bg-[#7188d4] size-10 rounded-full flex justify-center items-center font-bold text-white">
+            {{ product.get_discount.percentage|floatformat:0 }}%
+        </div>
+
+        <div class="mt-1 flex gap-2">
+            <p class="line-through text-sm text-gray-500">{{ product.price|floatformat:0 }} сом</p>
+            <p class="font-bold text-lg text-leader">{{ product.get_final_price|floatformat:0 }} сом</p>
+        </div>
+    {% else %}
+        <div class="font-bold text-lg mt-1">
+            {{ product.price|floatformat:0 }} сом
+        </div>
+    {% endif %}
+    
+    <form action="{% url URLNames.ACTION_ADD_TO_CART product.slug %}" method="POST" class="flex flex-col">
+        {% csrf_token %}
+        {% if product.sizes.all %}
+            <div class="mt-3 transition-all duration-300">
+                <label for="size-{{ product.id }}" class="sr-only">Выберите размер</label>
+                <select 
+                    name="size_id" 
+                    id="size-{{ product.id }}" 
+                    required
+                    class="border border-gray-300 rounded-lg px-2 py-1 mb-2 w-full"
+                >
+                    <option value="" disabled selected>Выберите размер</option>
+                    {% for size in product.sizes.all %}
+                        <option value="{{ size.id }}">{{ size.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        {% endif %}
+
+        <button type="submit" class="i-button cursor-pointer transition-all duration-300 mt-2 bg-[#7188d4] text-white px-4 py-2 rounded-lg">
+            В корзину
+        </button>
+    </form>
+</div>

@@ -1,0 +1,133 @@
+{% load static tailwind_tags %}
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <title>{% block title %}{% endblock %} - {{ site_settings.company_name }}</title>
+    <meta charset="UTF-8">
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
+     <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
+    />
+    {% block meta %}{% endblock %}
+    {% tailwind_css %}
+
+    <style>
+        @media (max-width: 1330px) {
+            body {
+                overflow-x: hidden;
+            }
+
+            #app {
+                width: 1340px;
+                transform-origin: top left;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="app">
+        {% include 'components/_topbar.html' %}
+        {% include 'components/_header.html' %}
+        
+        <div class="mb-6"></div>
+
+        <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+        <div class="w-full">
+            <div class="i-container flex gap-12">
+                {% include 'components/_leftbar.html' %}
+                {% block content %}{% endblock %}
+            </div>
+        </div>
+
+        {% if messages %}
+            {% for message in messages %}
+            <div class='
+                    {% if message.level_tag == "error" %}
+                    bg-red-400 
+                    {% elif message.level_tag == "success" %}
+                    bg-green-400
+                    {% else %}
+                    bg-leader
+                    {% endif %}
+                    px-4 py-3 w-[300px] rounded-md fixed bottom-4 right-4 z-50
+                '>
+                <p class="text-white leading-5">{{ message }}</p>
+            </div>
+            {% endfor %}
+        {% endif %}
+
+        <div class="bg-[#e5ebff] mt-16 p-6">
+            <div class="flex flex-col mb-8">
+                <a href="{% url URLNames.MAIN_PAGE %}" class="w-1/4 flex justify-start">
+                    <img 
+                        class="h-14"
+                        src="{{ site_settings.bg_transparent_logo.url }}" 
+                        alt="Логотип"
+                    >
+                </a>
+            </div>
+            <div class="flex justify-between">
+                <div class="flex flex-col pl-4 gap-3">
+                    <p class="font-medium text-xl">Сервис</p>
+                    <div class="flex flex-col gap-1">
+                        <a href="" class="text-blue-950">
+                            Оплата
+                        </a>
+                        <a href="" class="text-blue-950">
+                            Доставка
+                        </a>
+                        <a href="" class="text-blue-950">
+                            Возврат
+                        </a>
+                    </div>
+                </div>
+                <div class="flex flex-col pl-4 gap-3">
+                    <p class="font-medium text-xl">Контакты</p>
+                    <div class="flex flex-col gap-1">
+                        <div class="flex gap-2">
+                            <a href="tel:{{ site_settings.phone_number }}" class="text-blue-950">{{ site_settings.phone_number }}</a>
+                            <span class="text-leader">|</span>
+                            <a href="tel:{{ site_settings.phone_number2 }}" class="text-blue-950">{{ site_settings.phone_number2 }}</a>
+                        </div>
+                        <p class="mb-3 text-xl">{{ site_settings.address }}</p>
+                        <div class="flex gap-6">
+                            {% for socials_item in socials_list %}
+                            <a href="{{ socials_item.link }}" class="image-container rounded-full size-8">
+                                <img class="h-full max-w-none" src="{{ socials_item.logo.url }}" alt="">
+                            </a>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function scaleApp() {
+        const baseWidth = 1340;
+        const screenWidth = window.innerWidth;
+        const app = document.getElementById('app');
+
+        if (screenWidth < baseWidth) {
+            const scale = screenWidth / baseWidth;
+            app.style.transform = `scale(${scale})`;
+            app.style.transformOrigin = 'top left';
+            app.style.height = `${window.innerHeight}px`; // или можно просто: app.style.height = '';
+        } else {
+            app.style.transform = '';
+            app.style.height = '';
+        }
+        }
+
+        window.addEventListener('resize', scaleApp);
+        window.addEventListener('DOMContentLoaded', scaleApp);
+    </script>
+</body>
+</html>

@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block meta %}
+<!-- TODO: meta tags for catalog page -->
+{% endblock %}
+
+{% block title %}
+Каталог - {{ category.name }}
+{% endblock %}
+
+{% block content %}
+<div class="w-3/4 h-full gap-8 flex flex-col">
+    <div class="flex flex-col gap-2">
+        <h1 class="title">{{ category.name }}</h1>
+        {% if products_count > 0 %}
+        <p class="text-md opacity-70">Товаров: {{ products_count }}</p>
+        {% endif %}
+    </div>
+
+    {% if products_count == 0 %}
+        <div class="flex flex-col">
+            <h2 class="font-medium text-lg mb-2">В этой категории пока нет товаров</h2>
+            <p class="text-sm">
+                Следите за обновлениями — скоро здесь появятся новые товары!
+                А пока вы можете посмотреть <a class="text-leader" href="{% url URLNames.MAIN_PAGE %}">новинки на главной странице</a>.
+            </p>
+        </div>
+    {% endif %}
+
+    {% include "components/_product_grid.html" with products=products %}
+    </div>
+</div>
+{% endblock %}
